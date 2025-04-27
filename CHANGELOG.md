@@ -6,8 +6,16 @@ O formato segue [Conventional Commits](https://www.conventionalcommits.org/pt-br
 
 ---
 
-## [Unreleased]
+## [1.3.0] - 2025-04-27
 
 ### ✨ Features
 
-- (2025-04-27) Criada camada de serviço para usuários (`user.service.js`) separando lógica do controller
+- Adicionados testes de integração para os serviços de usuários (CRUD).
+- Configuração de ambiente de testes com banco SQLite para testes de integração.
+- Atualizadas dependências para garantir compatibilidade com o ambiente de testes.
+
+## [1.1.0] - 2025-04-27
+
+### ✨ Features
+
+- Criada camada de serviço para usuários (`user.service.js`) separando lógica do controller.
