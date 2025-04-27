@@ -1,113 +1,91 @@
-const db = require("../models");
-const User = db.users;
-const Op = db.Sequelize.Op;
+const userService = require("../services/user.service");
 
-exports.create = (req, res) => {
-  const user = {
-    name: req.body.name,
-    email: req.body.email,
-    active: req.body.active ? req.body.active : false,
-  };
+exports.create = async (req, res) => {
+  try {
+    const user = {
+      name: req.body.name,
+      email: req.body.email,
+      active: req.body.active || false,
+    };
 
-  User.create(user)
-    .then((data) => {
+    const data = await userService.createUser(user);
+    res.status(201).send(data);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Erro ao criar usuário.",
+    });
+  }
+};
+
+exports.findAll = async (req, res) => {
+  try {
+    const data = await userService.getAllUsers();
+    res.send(data);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Erro ao buscar usuários.",
+    });
+  }
+};
+
+exports.findOne = async (req, res) => {
+  try {
+    const data = await userService.getUserById(req.params.id);
+    if (data) {
       res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the User.",
+    } else {
+      res.status(404).send({
+        message: `Usuário com id=${req.params.id} não encontrado.`,
       });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Erro ao buscar usuário com id=" + req.params.id,
     });
+  }
 };
 
-exports.findAll = (req, res) => {
-  User.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
+exports.update = async (req, res) => {
+  try {
+    const num = await userService.updateUser(req.params.id, req.body);
+    if (num == 1) {
+      res.send({ message: "Usuário atualizado com sucesso." });
+    } else {
+      res.send({
+        message: `Não foi possível atualizar o usuário com id=${req.params.id}.`,
       });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Erro ao atualizar usuário com id=" + req.params.id,
     });
+  }
 };
 
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  User.findByPk(id)
-    .then((data) => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find User with id=${id}.`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving User with id=" + id,
+exports.delete = async (req, res) => {
+  try {
+    const num = await userService.deleteUser(req.params.id);
+    if (num == 1) {
+      res.send({ message: "Usuário deletado com sucesso." });
+    } else {
+      res.send({
+        message: `Não foi possível deletar o usuário com id=${req.params.id}.`,
       });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Erro ao deletar usuário com id=" + req.params.id,
     });
+  }
 };
 
-exports.update = (req, res) => {
-  const id = req.params.id;
-
-  User.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "User was updated successfully.",
-        });
-      } else {
-        res.send({
-          message: `Cannot update User with id=${id}. Maybe User was not found!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating User with id=" + id,
-      });
+exports.findAllActive = async (req, res) => {
+  try {
+    const data = await userService.getActiveUsers();
+    res.send(data);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Erro ao buscar usuários ativos.",
     });
-};
-
-exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  User.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "User was deleted successfully!",
-        });
-      } else {
-        res.send({
-          message: `Cannot delete User with id=${id}!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete User with id=" + id,
-      });
-    });
-};
-
-exports.findAllActive = (req, res) => {
-  User.findAll({ where: { active: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
-      });
-    });
+  }
 };
