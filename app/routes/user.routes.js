@@ -1,10 +1,11 @@
 module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
+  const validateUser = require("../middlewares/validateUser");
 
   var router = require("express").Router();
 
   // Create a new User
-  router.post("/", users.create);
+  router.post("/", validateUser, users.create);
 
   // Retrieve all Users
   router.get("/", users.findAll);
