@@ -6,7 +6,7 @@ exports.create = (req, res) => {
   const user = {
     name: req.body.name,
     email: req.body.email,
-    active: req.body.published ? req.body.active : false,
+    active: req.body.active ? req.body.active : false,
   };
 
   User.create(user)
@@ -100,8 +100,8 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.findAllPublished = (req, res) => {
-  User.findAll({ where: { published: true } })
+exports.findAllActive = (req, res) => {
+  User.findAll({ where: { active: true } })
     .then((data) => {
       res.send(data);
     })

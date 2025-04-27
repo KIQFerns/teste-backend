@@ -22,9 +22,7 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Bem vindo ao meu teste fullstack." });
-});
+require("./app/routes/user.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
