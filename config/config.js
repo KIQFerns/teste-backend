@@ -1,19 +1,21 @@
+require("dotenv").config();
+
 module.exports = {
   development: {
-    username: "postgres", // Seu usuário do PostgreSQL
-    password: "senha", // Sua senha do PostgreSQL
-    database: "testdb", // Nome do banco de dados
-    host: "localhost", // O host do banco de dados
-    dialect: "postgres", // Dialeto do PostgreSQL
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
     dialectOptions: {
-      ssl: false, // Se necessário, pode ajustar isso conforme sua configuração de SSL
+      ssl: false,
     },
   },
   test: {
-    username: "root",
-    password: null,
-    database: ":memory:", // Usando o banco em memória
-    host: "127.0.0.1",
-    dialect: "sqlite", // SQLite para testes em memória
+    username: process.env.DB_USERNAME_TEST,
+    password: process.env.DB_PASSWORD_TEST,
+    database: process.env.DB_DATABASE_TEST,
+    host: process.env.DB_HOST_TEST,
+    dialect: process.env.DB_DIALECT_TEST,
   },
 };
