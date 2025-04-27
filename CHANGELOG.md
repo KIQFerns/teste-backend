@@ -6,6 +6,14 @@ O formato segue [Conventional Commits](https://www.conventionalcommits.org/pt-br
 
 ---
 
+## [1.3.1] - 2025-04-27
+
+### ✨ Features
+
+- Adicionado suporte a variáveis de ambiente para configurações de banco de dados.
+- Utilização de arquivos .env para gerenciar variáveis de configuração, como credenciais do banco de dados.
+- Arquivo .env.example criado como modelo de configuração.
+
 ## [1.3.0] - 2025-04-27
 
 ### ✨ Features
