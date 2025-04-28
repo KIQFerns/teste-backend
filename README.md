@@ -12,7 +12,7 @@ Api com crud de usuário.
 
 ## Installation
 
-- **crie um arquivo **.env na raiz do projeto para criar as variaveis de ambiente (tem um modelo na raiz: env.example);
+- **crie um arquivo **.env na raiz do projeto para inserir as informações do seu banco em desenvolvimento (tem um modelo na raiz: env.example);
 
 ```bash
 $ npm install
