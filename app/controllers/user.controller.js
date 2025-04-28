@@ -44,16 +44,8 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const num = await userService.updateUser(req.params.id, req.body);
-    if (num === 1) {
-      res.send({ message: "Usuário atualizado com sucesso." });
-    } else {
-      sendErrorResponse(
-        res,
-        404,
-        `Não foi possível atualizar o usuário com id=${req.params.id}.`
-      );
-    }
+    const data = await userService.updateUser(req.params.id, req.body);
+    res.send(data);
   } catch (err) {
     sendErrorResponse(
       res,
@@ -65,16 +57,8 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    const num = await userService.deleteUser(req.params.id);
-    if (num === 1) {
-      res.send({ message: "Usuário deletado com sucesso." });
-    } else {
-      sendErrorResponse(
-        res,
-        404,
-        `Não foi possível deletar o usuário com id=${req.params.id}.`
-      );
-    }
+    const data = await userService.deleteUser(req.params.id);
+    res.send({ message: "Usuário deletado com sucesso." });
   } catch (err) {
     sendErrorResponse(
       res,
