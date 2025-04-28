@@ -1,4 +1,5 @@
 const userService = require("../services/user.service");
+const sendErrorResponse = require("../utils/errorHandler");
 
 exports.create = async (req, res) => {
   try {
@@ -11,9 +12,7 @@ exports.create = async (req, res) => {
     const data = await userService.createUser(user);
     res.status(201).send(data);
   } catch (err) {
-    res.status(500).send({
-      message: err.message || "Erro ao criar usuário.",
-    });
+    sendErrorResponse(res, 500, err.message || "Erro ao criar usuário.");
   }
 };
 
@@ -22,9 +21,7 @@ exports.findAll = async (req, res) => {
     const data = await userService.getAllUsers();
     res.send(data);
   } catch (err) {
-    res.status(500).send({
-      message: err.message || "Erro ao buscar usuários.",
-    });
+    sendErrorResponse(res, 500, err.message || "Erro ao buscar usuários.");
   }
 };
 
@@ -34,48 +31,56 @@ exports.findOne = async (req, res) => {
     if (data) {
       res.send(data);
     } else {
-      res.status(404).send({
-        message: `Usuário com id=${req.params.id} não encontrado.`,
-      });
+      sendErrorResponse(
+        res,
+        404,
+        `Usuário com id=${req.params.id} não encontrado.`
+      );
     }
   } catch (err) {
-    res.status(500).send({
-      message: "Erro ao buscar usuário com id=" + req.params.id,
-    });
+    sendErrorResponse(res, 500, err.message || "Erro ao buscar o usuário.");
   }
 };
 
 exports.update = async (req, res) => {
   try {
     const num = await userService.updateUser(req.params.id, req.body);
-    if (num == 1) {
+    if (num === 1) {
       res.send({ message: "Usuário atualizado com sucesso." });
     } else {
-      res.send({
-        message: `Não foi possível atualizar o usuário com id=${req.params.id}.`,
-      });
+      sendErrorResponse(
+        res,
+        404,
+        `Não foi possível atualizar o usuário com id=${req.params.id}.`
+      );
     }
   } catch (err) {
-    res.status(500).send({
-      message: "Erro ao atualizar usuário com id=" + req.params.id,
-    });
+    sendErrorResponse(
+      res,
+      500,
+      `Erro ao atualizar o usuário com id=${req.params.id}.`
+    );
   }
 };
 
 exports.delete = async (req, res) => {
   try {
     const num = await userService.deleteUser(req.params.id);
-    if (num == 1) {
+    if (num === 1) {
       res.send({ message: "Usuário deletado com sucesso." });
     } else {
-      res.send({
-        message: `Não foi possível deletar o usuário com id=${req.params.id}.`,
-      });
+      sendErrorResponse(
+        res,
+        404,
+        `Não foi possível deletar o usuário com id=${req.params.id}.`
+      );
     }
   } catch (err) {
-    res.status(500).send({
-      message: "Erro ao deletar usuário com id=" + req.params.id,
-    });
+    sendErrorResponse(
+      res,
+      500,
+      `Erro ao deletar o usuário com id=${req.params.id}.`
+    );
   }
 };
 
@@ -84,8 +89,10 @@ exports.findAllActive = async (req, res) => {
     const data = await userService.getActiveUsers();
     res.send(data);
   } catch (err) {
-    res.status(500).send({
-      message: err.message || "Erro ao buscar usuários ativos.",
-    });
+    sendErrorResponse(
+      res,
+      500,
+      err.message || "Erro ao buscar usuários ativos."
+    );
   }
 };
